@@ -30,7 +30,7 @@ export const saveUser = async (user) => {
 }
 
 export const getUsers = async () => {
-    let res = await collection.find({});
+    let res = await collection.find({}).sort({socialCreditScore: -1});
     return res;
 }
 
