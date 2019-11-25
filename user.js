@@ -29,15 +29,11 @@ export default class User {
     static async getOrCreateUser(userId, firstName) {
         let existing = await getUserById(userId);
         if (existing) {
-            console.log('EXISTING')
-            console.log('user', existing)
             let user = User.fromJSON(existing)
             user._id = existing._id;
             return user;
         } else {
-            console.log('NEW')
             let user = new User(userId, firstName, 0)
-            console.log('saving user', user)
             await saveUser(user)
             return user;
         }

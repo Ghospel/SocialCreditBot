@@ -16,7 +16,6 @@ const socialCreditMinus = 'CAADAQADAwADf3BGHENZiEtY50bNFgQ';
 const selfCreditMessage = "-20 omdat je jezelf credit probeert te geven."
 
 bot.on('message', async (msg) => {
-  console.log('yeet', msg)
   if (isReplyAndSticker(msg)) {
     if (msg.sticker.file_id == socialCreditPlus) {
       if(isGivingSelfCredit(msg)){
@@ -42,7 +41,7 @@ async function handleCredit(msg, amount, customMessage) {
   if(customMessage){
     bot.sendMessage(chatId, customMessage)
   }
-  bot.sendMessage(chatId, `${amount} Social credit. Totaal voor ${firstName}: ${user.socialCreditScore}`)
+  bot.sendMessage(chatId, `Totaal voor ${firstName}: ${user.socialCreditScore}`)
 }
 
 function isGivingSelfCredit(msg){
@@ -63,19 +62,13 @@ function isReplyAndSticker(msg) {
   return false;
 }
 
-bot.onText(/\/ranking/, async () => {
+bot.onText(/\/ranking/, async (msg) => {
   let users = await getUsers();
-  users.sort((a, b) => (a.socialCreditScore > b.socialCreditScore) ? 1 : -1);
   let i = 1;
-  var respondo = " ";
-  for (let j = 1; j < users.length + 1; j++) {
-    respondo.concat(`Op plaats ${j} staat ${users[j].firstName} met een CreditScore van ${users[j].socialCreditScore}`)
-  }
-  users.forEach(user => {
-    console.log(user);
-    //bot.sendMessage(msg.chat.id, `Op plaats ${i} staat ${user.firstName} met een CreditScore van ${user.socialCreditScore}.`)
+  let response = " ";
+  await users.forEach(user => {
+    response += `Op plaats ${i} staat ${user.firstName} met een CreditScore van ${user.socialCreditScore} \n`;
     i++;
   });
-  console.log(' respndo ', respondo)
-  //bot.sendMessage(msg.chat.id, resp);
+  bot.sendMessage(msg.chat.id, response)
 });

@@ -15,10 +15,8 @@ let collection;
 
 export const saveUser = async (user) => {
     if(user._id == null || user._id == undefined){
-        console.log('inserting')
         await collection.insertOne(user);
     } else {
-        console.log('updating')
         await collection.updateOne({"_id": user._id}, {$set:
             {
              firstName: user.firstName,
@@ -35,7 +33,6 @@ export const getUsers = async () => {
 }
 
 export const getUserById = async (user_id) => {
-    console.log('getting user by id:', user_id)
     let test = await collection.findOne({userId: user_id});
     if(test != undefined){
         let u = new User(test.userId, test.firstName, test.socialCreditScore);
