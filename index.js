@@ -67,7 +67,7 @@ bot.onText(/\/ranking/, async (msg) => {
   let i = 1;
   let response = " ";
   await users.forEach(user => {
-    response += `Op plaats ${i} staat ${user.firstName} met een CreditScore van ${user.socialCreditScore} \n`;
+    response += `#${i} ${user.firstName}. SocialScore: ${user.socialCreditScore} \n`;
     i++;
   });
   bot.sendMessage(msg.chat.id, response)
