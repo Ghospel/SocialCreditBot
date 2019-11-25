@@ -16,15 +16,19 @@ const socialCreditMinus = 'CAADAQADAwADf3BGHENZiEtY50bNFgQ';
 const selfCreditMessage = "-20 omdat je jezelf credit probeert te geven."
 
 bot.on('message', async (msg) => {
-  if (isReplyAndSticker(msg)) {
-    if (msg.sticker.file_id == socialCreditPlus) {
-      if(isGivingSelfCredit(msg)){
-        handleCredit(msg, -20, selfCreditMessage)
-      } else {
-        handleCredit(msg, 20);
+  console.log(msg.chat.id)
+  if(msg.chat.id == -379248839 || msg.chat.id == 848122263){
+    console.log('eee')
+    if (isReplyAndSticker(msg)) {
+      if (msg.sticker.file_id == socialCreditPlus) {
+        if(isGivingSelfCredit(msg)){
+          handleCredit(msg, -20, selfCreditMessage)
+        } else {
+          handleCredit(msg, 20);
+        }
+      } else if (msg.sticker.file_id == socialCreditMinus) {
+        handleCredit(msg, -20);
       }
-    } else if (msg.sticker.file_id == socialCreditMinus) {
-      handleCredit(msg, -20);
     }
   }
 });
