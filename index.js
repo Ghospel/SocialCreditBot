@@ -3,6 +3,14 @@ import {
   saveUser,
   getUsers,
 } from './db'
+import {
+  checkFilters,
+  toBeDecided,
+  minCreditFilter,
+  plusCreditFilter,
+  pushToFilter
+ } from './filter';
+
 
 const TelegramBot = require('node-telegram-bot-api');
 const options = {
@@ -15,22 +23,36 @@ const socialCreditMinus = 'CAADAQADAwADf3BGHENZiEtY50bNFgQ';
 
 const selfCreditMessage = "-20 omdat je jezelf credit probeert te geven."
 
+
+
+function updateArray (array) {
+    array.forEach(string => {
+        if (typeof string === 'string') {
+            string.toLowerCase();
+        } else { 
+            return;
+        }
+    })
+}
+
 bot.on('message', async (msg) => {
   console.log(msg.chat.id)
-  if(msg.chat.id == -379248839 || msg.chat.id == 848122263){
-    console.log('eee')
-    if (isReplyAndSticker(msg)) {
-      if (msg.sticker.file_id == socialCreditPlus) {
-        if(isGivingSelfCredit(msg)){
-          handleCredit(msg, -20, selfCreditMessage)
-        } else {
-          handleCredit(msg, 20);
-        }
-      } else if (msg.sticker.file_id == socialCreditMinus) {
-        handleCredit(msg, -20);
+//  if(msg.chat.id == -379248839 || msg.chat.id == 848122263){
+  checkFilters(msg);
+  checkMinFilter(msg);
+  checkPlusFilter(msg);
+  if (isReplyAndSticker(msg)) {
+    if (msg.sticker.file_id == socialCreditPlus) {
+      if(isGivingSelfCredit(msg)){
+        handleCredit(msg, -20, selfCreditMessage)
+      } else {
+        handleCredit(msg, 20);
       }
+    } else if (msg.sticker.file_id == socialCreditMinus) {
+      handleCredit(msg, -20);
     }
   }
+//  }
 });
 
 async function handleCredit(msg, amount, customMessage) {
@@ -76,3 +98,61 @@ bot.onText(/\/ranking/, async (msg) => {
   });
   bot.sendMessage(msg.chat.id, response)
 });
+
+bot.onText(/\/filters/, async (msg) => {
+  sendTBD(msg);
+});
+
+bot.onText(/\/filter/, async (msg) => {
+  sendTBDFirstIndex();
+});
+
+bot.onText(/\/min/, async (msg) => {
+  
+});
+
+bot.onText(/\/plus/, async (msg) => {
+  sendTBDFirstIndex();
+});
+
+bot.onText(/\/boeie/, async (msg) => {
+  sendTBDFirstIndex();
+});
+
+function sendTBD(msg) {
+  toBeDecided.forEach(flaggedMsg => {
+      bot.sendMessage(msg.chat.id, '"' + flaggedMsg + '"' + ' is een flagged message mag dit?');
+  });
+}
+
+function sendTBDFirstIndex() {
+  bot.sendMessage(-358918753, '"' + toBeDecided[0] + '"' + ' is een flagged message mag dit?')
+}
+
+function checkMinFilter(msg) {
+  minCreditFilter.forEach(string => {
+    if (msg.text) {
+      const correctedString = string.toLowerCase();
+      const correctedMsg = msg.text.toString().toLowerCase();
+      const match = correctedMsg.includes(correctedString);
+      if (match) {
+        bot.sendMessage(msg.chat.id, "mag nie van de regering", {reply_to_message_id: id})
+        handleCredit(msg, -100);
+      }
+    }
+  });
+}
+
+function checkPlusFilter(msg) {
+  plusCreditFilter.forEach(string => {
+    if (msg.text) {
+      const correctedString = string.toLowerCase();
+      const correctedMsg = msg.text.toString().toLowerCase();
+      const match = correctedMsg.includes(correctedString);
+      if (match) {
+        bot.sendMessage(msg.chat.id, "lekke bezig vind mark leuk", {reply_to_message_id: id})
+        handleCredit(msg, 100);
+      }
+    }
+  });
+}
