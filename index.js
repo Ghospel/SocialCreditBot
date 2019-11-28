@@ -108,11 +108,11 @@ bot.onText(/\/filter/, async (msg) => {
 });
 
 bot.onText(/\/min/, async (msg) => {
-  
+  pushToFilter(msg);
 });
 
 bot.onText(/\/plus/, async (msg) => {
-  sendTBDFirstIndex();
+  pushToFilter(msg);
 });
 
 bot.onText(/\/boeie/, async (msg) => {
