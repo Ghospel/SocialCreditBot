@@ -14,7 +14,7 @@ export function checkFilters(msg) {
           const correctedMsg = msg.text.toString().toLowerCase();
           const matchHotWords = correctedMsg.includes(correctedString);
           if (matchHotWords) {
-            if(!toBeDecided.includes(correctedMsg)){
+            if(!toBeDecided.includes(correctedMsg) && !deletedTBD.includes(correctedMsg)){
               toBeDecided.push(correctedMsg);
             }
           }

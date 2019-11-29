@@ -57,8 +57,15 @@ bot.on('message', async (msg) => {
 
 async function handleCredit(msg, amount, customMessage) {
   const chatId = msg.chat.id;
-  const firstName = msg.reply_to_message.from.first_name;
-  const userId = msg.reply_to_message.from.id;
+  let firstName;
+  let userId;
+  if (msg.reply_to_message) {
+    firstName = msg.reply_to_message.from.first_name;
+    userId = msg.reply_to_message.from.id;
+  } else {
+    firstName = msg.from.first_name;
+    userId = msg.from.id;
+  }
 
   let user = await User.getOrCreateUser(userId, firstName);
   user.addCredit(amount);
@@ -109,14 +116,17 @@ bot.onText(/\/filter/, async (msg) => {
 
 bot.onText(/\/min/, async (msg) => {
   pushToFilter(msg);
+  bot.sendMessage(-358918753, 'pushed naar min');
 });
 
 bot.onText(/\/plus/, async (msg) => {
   pushToFilter(msg);
+  bot.sendMessage(-358918753, 'pushed naar plus');
 });
 
 bot.onText(/\/boeie/, async (msg) => {
-  sendTBDFirstIndex();
+  pushToFilter(msg);
+  bot.sendMessage(-358918753, 'pushed naar boeie');
 });
 
 function sendTBD(msg) {
@@ -136,8 +146,8 @@ function checkMinFilter(msg) {
       const correctedMsg = msg.text.toString().toLowerCase();
       const match = correctedMsg.includes(correctedString);
       if (match) {
-        bot.sendMessage(msg.chat.id, "mag nie van de regering", {reply_to_message_id: id})
         handleCredit(msg, -100);
+        bot.sendMessage(msg.chat.id, "mag nie van de regering -100")
       }
     }
   });
@@ -150,7 +160,7 @@ function checkPlusFilter(msg) {
       const correctedMsg = msg.text.toString().toLowerCase();
       const match = correctedMsg.includes(correctedString);
       if (match) {
-        bot.sendMessage(msg.chat.id, "lekke bezig vind mark leuk", {reply_to_message_id: id})
+        bot.sendMessage(msg.chat.id, "lekke bezig vind mark leuk +100", {reply_to_message_id: msg.chat.id})
         handleCredit(msg, 100);
       }
     }
