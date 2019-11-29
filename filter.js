@@ -13,14 +13,8 @@ export function checkFilters(msg) {
           const correctedString = string.toLowerCase();
           const correctedMsg = msg.text.toString().toLowerCase();
           const matchHotWords = correctedMsg.includes(correctedString);
-          let duplicateCheck = 0;
           if (matchHotWords) {
-            toBeDecided.forEach(string => {
-              if (string.includes(correctedMsg)) {
-                duplicateCheck++
-              }
-            });
-            if (duplicateCheck === 0) {
+            if(!toBeDecided.includes(correctedMsg)){
               toBeDecided.push(correctedMsg);
             }
           }
