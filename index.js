@@ -116,17 +116,17 @@ bot.onText(/\/filter/, async (msg) => {
 
 bot.onText(/\/min/, async (msg) => {
   pushToFilter(msg);
-  bot.sendMessage(-358918753, 'pushed naar min');
+  bot.sendMessage(-358918753, '"' + msg + '"' + ' pushed naar min');
 });
 
 bot.onText(/\/plus/, async (msg) => {
   pushToFilter(msg);
-  bot.sendMessage(-358918753, 'pushed naar plus');
+  bot.sendMessage(-358918753, '"' + msg + '"' + ' pushed naar plus');
 });
 
 bot.onText(/\/boeie/, async (msg) => {
   pushToFilter(msg);
-  bot.sendMessage(-358918753, 'pushed naar boeie');
+  bot.sendMessage(-358918753, '"' + msg + '"' + ' pushed naar boeie');
 });
 
 function sendTBD(msg) {
